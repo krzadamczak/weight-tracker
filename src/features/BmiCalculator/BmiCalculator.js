@@ -9,12 +9,20 @@ export const BmiCalculator = () => {
         height: "",
         weight: "",
     });
+    const [bmi, setBmi] = useState(0);
     const handleInputValue = (e) => {
         const { name, value } = e.currentTarget;
         setInputValue((prevState) => ({
             ...prevState,
             [name]: value,
         }));
+    };
+    const handleBmi = () => {
+        const weight = parseInt(inputValue.weight);
+        const height = parseInt(inputValue.height) / 100;
+        console.log(Math.pow(height, 2));
+        const bmiValue = weight / Math.pow(height, 2);
+        setBmi(bmiValue);
     };
 
     return (
@@ -37,14 +45,12 @@ export const BmiCalculator = () => {
                 checked={isSexSelected("male")}
                 onChange={handleRadioClick}
             />
-
             <label htmlFor='weight'>Waga</label>
             <input id='weight' name='weight' value={inputValue.weight} onChange={handleInputValue} />
             <label htmlFor='height'>Wzrost</label>
             <input id='height' name='height' value={inputValue.height} onChange={handleInputValue} />
-            <p>{sex}</p>
-            {inputValue.weight}
-            {inputValue.height}
+            <button onClick={handleBmi}>Oblicz BMI</button>
+            Twoje BMI wynosi <span>{bmi}</span>
         </div>
     );
 };
