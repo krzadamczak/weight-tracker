@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./BmiForm.css";
+import { BmiResult } from "./BmiResult";
 
 export const BmiForm = () => {
     const [sex, setSex] = useState("");
@@ -10,7 +11,7 @@ export const BmiForm = () => {
         height: "",
         weight: "",
     });
-    const [bmi, setBmi] = useState(null);
+    const [bmiData, setBmiData] = useState(null);
     const handleInputValue = (e) => {
         const { name, value } = e.currentTarget;
         setInputValue((prevState) => ({
@@ -18,12 +19,11 @@ export const BmiForm = () => {
             [name]: value,
         }));
     };
-    const handleBmi = () => {
+    const handleBmiData = () => {
         const weight = parseInt(inputValue.weight);
         const height = parseInt(inputValue.height) / 100;
-        console.log(Math.pow(height, 2));
-        const bmiValue = weight / Math.pow(height, 2);
-        setBmi(bmiValue);
+        const bmi = weight / Math.pow(height, 2);
+        setBmiData({ weight, height, bmi });
     };
 
     return (
@@ -83,10 +83,11 @@ export const BmiForm = () => {
                     onChange={handleInputValue}
                 />
             </div>
-            <button className='button bmi-form__button' onClick={handleBmi}>
+            <button className='button bmi-form__button' onClick={handleBmiData}>
                 Calculate BMI
             </button>
-            {bmi && <p className='result'>Your BMI is {bmi}</p>}
+            {/* {bmi && <p className='result'>Your BMI is {bmi}</p>} */}
+            {bmiData && <BmiResult data={bmiData} />}
         </div>
     );
 };
