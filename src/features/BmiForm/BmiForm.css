@@ -1,0 +1,19 @@
+.bmi-form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 1rem auto;
+    gap: 1rem;
+}
+
+.bmi-form__radio-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.bmi-form__input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}

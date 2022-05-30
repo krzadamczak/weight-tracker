@@ -1,10 +1,10 @@
 import "./App.css";
-import { BmiCalculator } from "./features/BmiCalculator/BmiCalculator";
+import { BmiForm } from "./features/BmiForm/BmiForm";
 
 function App() {
     return (
         <div className='App'>
-            <BmiCalculator />
+            <BmiForm />
         </div>
     );
 }
