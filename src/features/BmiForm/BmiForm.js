@@ -1,30 +1,37 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import "./BmiForm.css";
 import { BmiResult } from "./BmiResult";
 
-export const BmiForm = () => {
-    const [sex, setSex] = useState("");
-    const isSexSelected = (value) => value === sex;
-    const handleRadioClick = (e) => setSex(e.currentTarget.value);
+const BMI_ACTIONS = {
+    SET_DATA: "SET_DATA",
+    CALCULATE_BMI: "CALCULATE_BMI",
+};
 
-    const [inputValue, setInputValue] = useState({
-        height: "",
-        weight: "",
-    });
-    const [bmiData, setBmiData] = useState(null);
-    const handleInputValue = (e) => {
-        const { name, value } = e.currentTarget;
-        setInputValue((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+const bmiReducer = (state, action) => {
+    switch (action.type) {
+        case BMI_ACTIONS.SET_DATA:
+            let { name, value } = action.payload.target;
+            if (typeof value === "string" && action.payload.target.type !== "radio") value = parseInt(value);
+            return { ...state, [name]: value };
+        case BMI_ACTIONS.CALCULATE_BMI:
+            const weight = state.weight;
+            const height = state.height / 100;
+            const bmi = weight / Math.pow(height, 2);
+            return { ...state, bmi };
+        default:
+            return state;
+    }
+};
+
+export const BmiForm = () => {
+    const [bmiState, dispatchBmi] = useReducer(bmiReducer, { weight: "", height: "", sex: "", bmi: 0 });
+    const isSexSelected = (value) => value === bmiState.sex;
+
+    const inputHandler = (e) => {
+        console.log("test");
+        dispatchBmi({ type: BMI_ACTIONS.SET_DATA, payload: e });
     };
-    const handleBmiData = () => {
-        const weight = parseInt(inputValue.weight);
-        const height = parseInt(inputValue.height) / 100;
-        const bmi = weight / Math.pow(height, 2);
-        setBmiData({ weight, height, bmi });
-    };
+    const bmiCalculateHandler = () => dispatchBmi({ type: BMI_ACTIONS.CALCULATE_BMI });
 
     return (
         <div className='bmi-form'>
@@ -41,7 +48,7 @@ export const BmiForm = () => {
                         value='female'
                         name='sex'
                         checked={isSexSelected("female")}
-                        onChange={handleRadioClick}
+                        onChange={inputHandler}
                     />
                 </div>
                 <div className='bmi-form__radio-group'>
@@ -55,7 +62,7 @@ export const BmiForm = () => {
                         value='male'
                         name='sex'
                         checked={isSexSelected("male")}
-                        onChange={handleRadioClick}
+                        onChange={inputHandler}
                     />
                 </div>
             </div>
@@ -63,31 +70,19 @@ export const BmiForm = () => {
                 <label className='label' htmlFor='weight'>
                     Weight
                 </label>
-                <input
-                    className='input'
-                    id='weight'
-                    name='weight'
-                    value={inputValue.weight}
-                    onChange={handleInputValue}
-                />
+                <input className='input' id='weight' name='weight' value={bmiState.weight} onChange={inputHandler} />
             </div>
             <div className='bmi-form__input-group'>
                 <label className='label' htmlFor='height'>
                     Height
                 </label>
-                <input
-                    className='input'
-                    id='height'
-                    name='height'
-                    value={inputValue.height}
-                    onChange={handleInputValue}
-                />
+                <input className='input' id='height' name='height' value={bmiState.height} onChange={inputHandler} />
             </div>
-            <button className='button bmi-form__button' onClick={handleBmiData}>
+            <button className='button bmi-form__button' onClick={bmiCalculateHandler}>
                 Calculate BMI
             </button>
             {/* {bmi && <p className='result'>Your BMI is {bmi}</p>} */}
-            {bmiData && <BmiResult data={bmiData} />}
+            {bmiState && <BmiResult data={bmiState} />}
         </div>
     );
 };

@@ -2,12 +2,13 @@ import React from "react";
 //Błąd - przy wpisaniu 73 kg i 171 cm nic się nie pokazuje.
 export const BmiResult = (props) => {
     const { bmi, weight, height } = props.data;
-    console.log(props.data);
-    const calculateProperWeight = (bmi, height) => bmi * Math.pow(height, 2);
+    console.log(height);
+    const calculateProperWeight = (bmi, height) => bmi * Math.pow(height / 100, 2);
     const createProperWeightString = (bmi, weight, height) => {
         let properWeight;
         if (bmi <= 18.4) {
             properWeight = Math.ceil(Math.abs(calculateProperWeight(18.5, height) - weight));
+            console.log("calculateProperWeight", calculateProperWeight(18.5, height));
             return `You should gain around ${properWeight} kg`;
         } else if (bmi >= 25) {
             properWeight = Math.ceil(Math.abs(calculateProperWeight(24.9, height) - weight));
