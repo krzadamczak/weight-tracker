@@ -24,7 +24,7 @@ const bmiReducer = (state, action) => {
 };
 
 export const BmiForm = () => {
-    const [bmiState, dispatchBmi] = useReducer(bmiReducer, { weight: "", height: "", sex: "", bmi: 0 });
+    const [bmiState, dispatchBmi] = useReducer(bmiReducer, {});
     const isSexSelected = (value) => value === bmiState.sex;
 
     const inputHandler = (e) => {
@@ -74,7 +74,7 @@ export const BmiForm = () => {
             </div>
             <div className='bmi-form__input-group'>
                 <label className='label' htmlFor='height'>
-                    Height
+                    Height (in cm)
                 </label>
                 <input className='input' id='height' name='height' value={bmiState.height} onChange={inputHandler} />
             </div>
