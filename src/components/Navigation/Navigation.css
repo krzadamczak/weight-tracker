@@ -1,0 +1,14 @@
+.nav {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.nav-link {
+    color: hsl(0, 0%, 25%);
+    text-decoration: none;
+}
+
+.nav-link--active {
+    font-weight: 700;
+}
