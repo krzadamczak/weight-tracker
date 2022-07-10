@@ -1,5 +1,9 @@
-.home-first-wrapper {
+.home {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+.home__first-inner {
     display: grid;
-    gap: 2rem;
     grid-template-columns: 1fr 1fr;
 }

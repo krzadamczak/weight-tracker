@@ -28,7 +28,6 @@ export const BmiForm = () => {
     const isSexSelected = (value) => value === bmiState.sex;
 
     const inputHandler = (e) => {
-        console.log("test");
         dispatchBmi({ type: BMI_ACTIONS.SET_DATA, payload: e });
     };
     const bmiCalculateHandler = () => dispatchBmi({ type: BMI_ACTIONS.CALCULATE_BMI });

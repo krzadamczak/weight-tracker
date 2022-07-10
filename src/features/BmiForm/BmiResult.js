@@ -8,7 +8,6 @@ export const BmiResult = (props) => {
         let properWeight;
         if (bmi <= 18.4) {
             properWeight = Math.ceil(Math.abs(calculateProperWeight(18.5, height) - weight));
-            console.log("calculateProperWeight", calculateProperWeight(18.5, height));
             return `You should gain around ${properWeight} kg`;
         } else if (bmi >= 25) {
             properWeight = Math.ceil(Math.abs(calculateProperWeight(24.9, height) - weight));

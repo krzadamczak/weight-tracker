@@ -1,0 +1,28 @@
+.add-entry {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+.add-entry__label {
+    font-size: 2rem;
+}
+.add-entry__input {
+    padding: 0.25rem 0.5rem;
+    font-size: 1.5rem;
+    border: none;
+    border-bottom: 1px solid hsl(0, 0%, 95%);
+    transition: border-bottom 0.2s ease-in-out;
+}
+.add-entry__input:focus {
+    border-bottom: 1px solid hsl(0, 0%, 40%);
+    outline: none;
+}
+.add-entry__button {
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    background-color: hsl(212, 79%, 54%);
+    color: hsl(0, 0%, 100%);
+}
