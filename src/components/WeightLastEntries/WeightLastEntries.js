@@ -15,24 +15,29 @@ function printDate(dateObj) {
 
 const WeightLastEntries = (props) => {
     const additionalClass = props?.bemPostionClass ?? "";
-    const { weightState, removeEntry, updateEntry } = useWeightContext();
-    const [isUpdateFormVisible, setIsUpdateFormVisible] = useState(false);
-    const [newWeight, setNewWeight] = useState(0);
-    const handleFormVisibility = () => {
-        setIsUpdateFormVisible((prevState) => !prevState);
+    const { weightState, removeEntry, updateEntry, setIsUpdateFormVisible } = useWeightContext();
+    // const [isUpdateFormVisible, setIsUpdateFormVisible] = useState([]);
+    const [newWeight, setNewWeight] = useState({});
+    const handleFormVisibility = (id) => {
+        setIsUpdateFormVisible(id);
     };
     const handleUpdate = (e, id) => {
-        const { value } = e.currentTarget;
-        setNewWeight(value);
+        const { name, value } = e.currentTarget;
+        setNewWeight((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
     const handleRemove = (id) => {
+        //Dispatch calls are grouped in batches
+        // setIsUpdateFormVisible(id, false);
         removeEntry(id);
-        setIsUpdateFormVisible(false);
     };
     const handleSave = (id) => {
-        setIsUpdateFormVisible(false);
-        console.log("newWeight", newWeight);
-        updateEntry({ id, weight: newWeight });
+        // console.log("id", id);
+        // console.log("newWeight", newWeight[id]);
+        setIsUpdateFormVisible(id, false);
+        updateEntry({ id, weight: parseInt(newWeight[id]) });
     };
 
     return (
@@ -43,9 +48,13 @@ const WeightLastEntries = (props) => {
                     <div className='list__item' key={item.id}>
                         <div className='list__date'>{printDate(item.date)}</div>
                         <div className='list__weight'>
-                            {isUpdateFormVisible ? (
+                            {item.isUpdateFormVisible ? (
                                 <>
-                                    <input name='weight' value={newWeight} onChange={(e) => handleUpdate(e, item.id)} />
+                                    <input
+                                        name={item.id}
+                                        value={newWeight[item.id] ?? ""}
+                                        onChange={(e) => handleUpdate(e, item.id)}
+                                    />
                                     <button onClick={() => handleSave(item.id)}>Save</button>
                                 </>
                             ) : (
@@ -56,8 +65,8 @@ const WeightLastEntries = (props) => {
                             <button onClick={() => handleRemove(item.id)} className='list__delete'>
                                 Delete
                             </button>
-                            <button onClick={handleFormVisibility} className='list__update'>
-                                {isUpdateFormVisible ? "Discard changes" : "Update"}
+                            <button onClick={() => handleFormVisibility(item.id)} className='list__update'>
+                                {item.isUpdateFormVisible ? "Discard changes" : "Update"}
                             </button>
                         </div>
                     </div>

@@ -22,14 +22,30 @@ const weightReducer = (state, action) => {
         case "REMOVE_ENTRY": {
             const data = [...state.data.filter((item) => item.id !== action.payload)];
             localStorage.setItem("data", JSON.stringify(data));
+            console.log("REMOVE_ENTRY");
             return { ...state, data };
         }
         case "UPDATE_ENTRY": {
             const indexToUpdate = state.data.findIndex((item) => item.id === action.payload.id);
-            const data = [
-                (state.data[indexToUpdate] = { ...state.data[indexToUpdate], weight: action.payload.weight }),
-            ];
+            const data = [...state.data];
+            data[indexToUpdate] = { ...state.data[indexToUpdate], weight: action.payload.weight };
             localStorage.setItem("data", JSON.stringify(data));
+            return {
+                ...state,
+                data,
+            };
+        }
+        case "SET_IS_UPDATE_FORM_VISIBILE": {
+            const indexToUpdate = state.data.findIndex((item) => item.id === action.payload.id);
+
+            console.log("SET_IS_UPDATE_FORM_VISIBILE");
+            const data = [...state.data];
+            data[indexToUpdate] = {
+                ...state.data[indexToUpdate],
+                isUpdateFormVisible:
+                    action.payload.isUpdateFormVisible ?? !state.data[indexToUpdate].isUpdateFormVisible,
+            };
+            console.log(data);
             return {
                 ...state,
                 data,
@@ -54,20 +70,30 @@ export const WeightProvider = (props) => {
     const [weightState, dispatchWeightAction] = useReducer(weightReducer, weightInitialState);
 
     const addEntry = (entry) => {
-        dispatchWeightAction({ type: "ADD_ENTRY", payload: { id: entry.id, weight: entry.weight, date: entry.date } });
+        dispatchWeightAction({
+            type: "ADD_ENTRY",
+            payload: {
+                id: entry.id,
+                weight: entry.weight,
+                date: entry.date,
+                isUpdateFormVisible: entry.isUpdateFormVisible,
+            },
+        });
     };
     const removeEntry = (id) => {
         dispatchWeightAction({ type: "REMOVE_ENTRY", payload: id });
     };
     const updateEntry = (entry) => {
-        console.log("entry", entry);
         dispatchWeightAction({ type: "UPDATE_ENTRY", payload: { id: entry.id, weight: entry.weight } });
+    };
+    const setIsUpdateFormVisible = (id, isUpdateFormVisible) => {
+        dispatchWeightAction({ type: "SET_IS_UPDATE_FORM_VISIBILE", payload: { id, isUpdateFormVisible } });
     };
     const init = () => {
         dispatchWeightAction({ type: "INIT" });
     };
 
-    const value = { addEntry, removeEntry, updateEntry, init, weightState };
+    const value = { addEntry, removeEntry, setIsUpdateFormVisible, updateEntry, init, weightState };
 
     return <WeightContext.Provider value={value}>{props.children}</WeightContext.Provider>;
 };

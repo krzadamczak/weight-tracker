@@ -22,7 +22,7 @@ const AddEntry = () => {
             return;
         }
 
-        addEntry({ id: nanoid(), weight: inputValue, date: new Date() });
+        addEntry({ id: nanoid(), weight: inputValue, date: new Date(), isUpdateFormVisible: false });
     };
 
     return (

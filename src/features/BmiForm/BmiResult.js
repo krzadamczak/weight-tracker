@@ -2,7 +2,7 @@ import React from "react";
 //Błąd - przy wpisaniu 73 kg i 171 cm nic się nie pokazuje.
 export const BmiResult = (props) => {
     const { bmi, weight, height } = props.data;
-    console.log(height);
+    console.log(props.data);
     const calculateProperWeight = (bmi, height) => bmi * Math.pow(height / 100, 2);
     const createProperWeightString = (bmi, weight, height) => {
         let properWeight;

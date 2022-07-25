@@ -1,4 +1,5 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
+import { useEffect } from "react";
 import "./BmiForm.css";
 import { BmiResult } from "./BmiResult";
 
@@ -24,13 +25,18 @@ const bmiReducer = (state, action) => {
 };
 
 export const BmiForm = () => {
-    const [bmiState, dispatchBmi] = useReducer(bmiReducer, {});
+    const [bmiState, dispatchBmi] = useReducer(bmiReducer, { weight: "", height: "" });
+    const [isVisible, setIsVisible] = useState(false);
     const isSexSelected = (value) => value === bmiState.sex;
 
     const inputHandler = (e) => {
         dispatchBmi({ type: BMI_ACTIONS.SET_DATA, payload: e });
     };
-    const bmiCalculateHandler = () => dispatchBmi({ type: BMI_ACTIONS.CALCULATE_BMI });
+    const bmiCalculateHandler = () => {
+        setIsVisible(true);
+        dispatchBmi({ type: BMI_ACTIONS.CALCULATE_BMI });
+    };
+    useEffect(() => setIsVisible(false), [bmiState.weight, bmiState.height]);
 
     return (
         <div className='bmi-form'>
@@ -81,7 +87,7 @@ export const BmiForm = () => {
                 Calculate BMI
             </button>
             {/* {bmi && <p className='result'>Your BMI is {bmi}</p>} */}
-            {bmiState && <BmiResult data={bmiState} />}
+            {isVisible && <BmiResult data={bmiState} />}
         </div>
     );
 };
